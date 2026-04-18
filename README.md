@@ -1,37 +1,50 @@
-# GitHub Pages Setup
+# Blackhole Pages
 
-This `docs/` folder is ready to publish with GitHub Pages.
+Public support pages for the Blackhole macOS app.
 
-## Option 1: Publish from the `docs` folder on `main`
+## Live Site
 
-1. Push this repository to GitHub.
-2. Open the repository settings.
-3. Go to `Pages`.
-4. Under `Build and deployment`, choose:
-   - `Source`: `Deploy from a branch`
-   - `Branch`: `main`
-   - `Folder`: `/docs`
-5. Save.
+- Home: `https://blackhole.quirkgoose.com/`
+- Support: `https://blackhole.quirkgoose.com/support.html`
+- Privacy: `https://blackhole.quirkgoose.com/privacy.html`
 
-GitHub will publish:
+## Repository Contents
 
 - `index.html`
 - `support.html`
 - `privacy.html`
+- `site.css`
+- `.nojekyll`
+- `CNAME`
 
-## Replace Before Publishing
+## GitHub Pages Settings
 
-Update these placeholder emails first:
+- Source: `Deploy from a branch`
+- Branch: `main`
+- Folder: `/ (root)`
+- Custom domain: `blackhole.quirkgoose.com`
+
+## DNS
+
+Create this DNS record:
+
+- Type: `CNAME`
+- Host: `blackhole`
+- Target: `quirkgoose.github.io`
+
+## Contact
 
 - `support+blackhole@quirkgoose.com`
-- `support+blackhole@quirkgoose.com`
 
-They currently appear in:
+## Update Workflow
 
-- `support.html`
-- `privacy.html`
+This repository is updated from the app repo's `docs/` folder.
 
-## Suggested Final URLs
-
-- `https://<username>.github.io/<repo>/support.html`
-- `https://<username>.github.io/<repo>/privacy.html`
+```bash
+rsync -av --delete /Users/hanjungoo/workspace/blackhole/docs/ /Users/hanjungoo/workspace/blackhole-site/
+cd /Users/hanjungoo/workspace/blackhole-site
+printf 'blackhole.quirkgoose.com\n' > CNAME
+git add .
+git commit -m "Update Pages site"
+git push origin main
+```
