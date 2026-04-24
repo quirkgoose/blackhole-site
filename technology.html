@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blackhole Technology</title>
+    <meta
+      name="description"
+      content="A technical overview of how Blackhole renders gravitational lensing, accretion disks, NASA sky maps, and high-quality video exports efficiently on macOS."
+    />
+    <link rel="stylesheet" href="./site.css" />
+  </head>
+  <body>
+    <main class="page-shell landing-shell">
+      <nav class="top-nav">
+        <a href="./index.html">Home</a>
+        <a href="./support.html">Support</a>
+        <a href="./privacy.html">Privacy</a>
+      </nav>
+
+      <section class="hero-card hero-split">
+        <div class="hero-copy">
+          <p class="eyebrow">Technology</p>
+          <h1>How Blackhole renders a cinematic black hole in real time</h1>
+          <p class="lede">
+            Blackhole is a native macOS app built with SwiftUI and Metal. It
+            combines per-pixel lensing, procedural accretion-disk emission,
+            panoramic NASA sky maps, and adaptive quality controls to keep the
+            scene responsive while preserving the recognizable black hole look.
+          </p>
+          <p class="brand-note">
+            The app is designed as a cinematic visual simulator. It uses
+            physically inspired approximations rather than a full scientific
+            general-relativity or radiative-transfer solver.
+          </p>
+        </div>
+
+        <div class="hero-media technical-hero-card">
+          <p class="eyebrow">Render Loop</p>
+          <ol class="numbered-flow">
+            <li>SwiftUI settings become compact Metal uniforms.</li>
+            <li>Each pixel launches a camera ray through the scene.</li>
+            <li>The ray bends near the black hole and samples disk emission.</li>
+            <li>The remaining ray direction samples the stitched sky map.</li>
+            <li>Overlays and UI are composited separately.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="info-grid feature-grid">
+        <article class="info-card">
+          <h2>SwiftUI interface</h2>
+          <p>
+            The app shell, helper menu, settings, background picker, clock
+            overlay controls, and video export panel are written in SwiftUI.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>Metal renderer</h2>
+          <p>
+            The simulation view is backed by Metal, allowing the black hole
+            scene to be rendered directly on the GPU at interactive frame rates.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>AVFoundation export</h2>
+          <p>
+            Offline MP4 export renders frames with a fixed timestep, then writes
+            them through AVFoundation using HEVC or H.264.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>Local-first design</h2>
+          <p>
+            NASA images, custom folders, thumbnails, settings, and generated
+            video exports stay on the user's Mac.
+          </p>
+        </article>
+      </section>
+
+      <section class="content-card">
+        <p class="eyebrow">Rendering Model</p>
+        <h2>What happens inside a frame</h2>
+        <div class="process-grid">
+          <article>
+            <h3>1. Camera and scene state</h3>
+            <p>
+              Mouse-look, auto-hover, flyby, zoom, disk rotation, selected
+              background, and computation mode are packed into a small uniform
+              block for the GPU.
+            </p>
+          </article>
+
+          <article>
+            <h3>2. Per-pixel ray tracing</h3>
+            <p>
+              The fragment shader traces a ray from the camera through the black
+              hole field. Near the center, the ray curves enough to reveal the
+              far-side accretion disk and the lensed sky behind it.
+            </p>
+          </article>
+
+          <article>
+            <h3>3. Accretion disk sampling</h3>
+            <p>
+              The disk is rendered procedurally with density falloff, noise,
+              Doppler-style brightness asymmetry, color ramps, and optional
+              higher-detail turbulence for more chaotic structure.
+            </p>
+          </article>
+
+          <article>
+            <h3>4. Sky-map lookup</h3>
+            <p>
+              Curated NASA images are stitched into panoramic sky maps. After a
+              ray exits the black hole region, its final direction samples the
+              background texture so the backdrop appears gravitationally bent.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <p class="eyebrow">Performance Strategy</p>
+        <h2>How the app stays fast</h2>
+        <div class="two-column-list">
+          <ul>
+            <li>Computation presets tune render scale, trace steps, and disk noise detail.</li>
+            <li>Dynamic render scale can step down when the drawable becomes expensive.</li>
+            <li>Low-load modes reduce work away from the visually important lensing region.</li>
+            <li>Zoomed-out views preserve far-side disk visibility with targeted ray reach.</li>
+          </ul>
+          <ul>
+            <li>Background thumbnails are prebuilt so the picker stays responsive.</li>
+            <li>Image metadata and previews are separated from full-resolution textures.</li>
+            <li>Simulation overlays are kept separate from the heavy black hole pass.</li>
+            <li>Offline export can spend more time per frame than real-time playback.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <p class="eyebrow">Quality Modes</p>
+        <h2>Real-time versus export</h2>
+        <div class="comparison-grid">
+          <article class="comparison-card">
+            <h3>Real-time simulation</h3>
+            <p>
+              Optimized for interaction. The app balances image quality,
+              latency, GPU time, and battery use while the user drags, zooms,
+              opens menus, or changes backgrounds.
+            </p>
+          </article>
+
+          <article class="comparison-card">
+            <h3>Offline video export</h3>
+            <p>
+              Optimized for smooth final output. Export can render frames one by
+              one with a stable camera path, selected background queue, and
+              higher quality settings before encoding the MP4.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <p class="eyebrow">Visual Honesty</p>
+        <h2>What it is, and what it is not</h2>
+        <p>
+          Blackhole aims to make gravitational lensing and accretion disks feel
+          vivid on a desktop Mac. It is inspired by black hole physics, but it is
+          not a replacement for scientific simulation tools used in astrophysics
+          research. The binary black hole mode is experimental and intentionally
+          tuned for visual exploration.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

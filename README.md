@@ -5,12 +5,14 @@ Public support pages for the Blackhole macOS app.
 ## Live Site
 
 - Home: `https://blackhole.quirkgoose.com/`
+- Technology: `https://blackhole.quirkgoose.com/technology.html`
 - Support: `https://blackhole.quirkgoose.com/support.html`
 - Privacy: `https://blackhole.quirkgoose.com/privacy.html`
 
 ## Repository Contents
 
 - `index.html`
+- `technology.html`
 - `support.html`
 - `privacy.html`
 - `site.css`
